@@ -7,8 +7,8 @@ public class UserMapper {
     public User toEntity(UserRegistrationDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword()); // Ensure to encode this before saving
-        user.getRoles().add("ROLE_USER"); // Default role
+        user.setPassword(dto.getPassword());
+        user.getRoles().add("ROLE_USER");
         return user;
     }
 
