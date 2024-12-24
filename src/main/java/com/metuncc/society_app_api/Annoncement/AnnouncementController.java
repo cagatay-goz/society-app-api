@@ -1,9 +1,6 @@
 package com.metuncc.society_app_api.Annoncement;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,11 @@ public class AnnouncementController {
     @GetMapping("/society/{societyId}")
     public List<Announcement> getAnnouncementBySocietyId(@PathVariable long societyId) {
         return announcementService.getAnnouncementBySocietyId(societyId);
+    }
+
+    @PostMapping(consumes = "multipart/form-data")
+    public Announcement createAnnouncement(@ModelAttribute CreateAnnouncementRequest announcementRequest) {
+        return announcementService.createAnnouncement(announcementRequest);
     }
 
 }
