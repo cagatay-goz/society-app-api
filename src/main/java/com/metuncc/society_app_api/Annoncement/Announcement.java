@@ -8,6 +8,8 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="announcements")
 @Data
@@ -17,6 +19,8 @@ public class Announcement {
     Long id;
     String title;
     String content;
+    LocalDateTime date;
+    String location;
     String posterUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,31 +1,31 @@
-package com.metuncc.society_app_api.Society;
+    package com.metuncc.society_app_api.Society;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+    import java.util.List;
 
-@RestController
-@RequestMapping("/societies")
-public class SocietyController {
-    private final SocietyService societyService;
+    @RestController
+    @RequestMapping("/societies")
+    public class SocietyController {
+        private final SocietyService societyService;
 
-    public SocietyController(SocietyService societyService) {
-        this.societyService = societyService;
+        public SocietyController(SocietyService societyService) {
+            this.societyService = societyService;
+        }
+
+        @GetMapping
+        public List<Society> getAllSocieties() {
+            return societyService.getAllSocieties();
+        }
+
+        @GetMapping("/{societyId}")
+        public Society getOneSociety(@PathVariable long societyId) {
+            return societyService.getOneSociety(societyId);
+        }
+
+
+
     }
-
-    @GetMapping
-    public List<Society> getAllSocieties() {
-        return societyService.getAllSocieties();
-    }
-
-    @GetMapping("/{societyId}")
-    public Society getOneSociety(@PathVariable long societyId) {
-        return societyService.getOneSociety(societyId);
-    }
-
-
-
-}

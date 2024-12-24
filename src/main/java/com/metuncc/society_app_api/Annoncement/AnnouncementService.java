@@ -22,4 +22,8 @@ public class AnnouncementService {
     public Announcement getOneAnnouncementById(long announcementId) {
         return announcementRepository.findById(announcementId).orElse(null);
     }
+
+    public List <Announcement> getAnnouncementBySocietyId(long societyId) {
+        return announcementRepository.findBySocietyId(societyId);
+    }
 }

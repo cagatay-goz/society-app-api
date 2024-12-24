@@ -19,8 +19,15 @@ public class AnnouncementController {
     public List<Announcement> getAllAnnouncements() {
         return announcementService.getAllAnnouncements();
     }
+
     @GetMapping("/{announcementId}")
     public Announcement getAnnouncementById(@PathVariable long announcementId) {
         return announcementService.getOneAnnouncementById(announcementId);
     }
+
+    @GetMapping("/society/{societyId}")
+    public List<Announcement> getAnnouncementBySocietyId(@PathVariable long societyId) {
+        return announcementService.getAnnouncementBySocietyId(societyId);
+    }
+
 }
