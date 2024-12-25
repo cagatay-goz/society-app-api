@@ -1,9 +1,7 @@
     package com.metuncc.society_app_api.Society;
 
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
 
     import java.util.List;
 
@@ -26,6 +24,19 @@
             return societyService.getOneSociety(societyId);
         }
 
+        @PostMapping("/add")
+        public ResponseEntity<?> createSociety(@RequestBody Society society) {
+            try {
+                Society createdSociety = societyService.createSociety(society);
+                return ResponseEntity.ok(createdSociety);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error creating society: " + e.getMessage());
+            }
+        }
 
+        @GetMapping("/user/{email}")
+        public List<Society> getSocietiesByUserId(@PathVariable String email) {
+            return societyService.getSocietiesByUserId(email);
+        }
 
     }

@@ -32,4 +32,19 @@ public class AnnouncementController {
         return announcementService.createAnnouncement(announcementRequest);
     }
 
+    @DeleteMapping("/{announcementId}")
+    public void deleteAnnouncement(@PathVariable long announcementId) {
+        announcementService.deleteAnnouncement(announcementId);
+    }
+
+    @PutMapping("/{announcementId}")
+    public Announcement updateAnnouncement(
+            @PathVariable long announcementId,
+            @ModelAttribute UpdateAnnouncementRequest updateRequest) {
+        // Call the service method to update the announcement
+        return announcementService.editAnnouncement(announcementId, updateRequest);
+    }
+
+
+
 }

@@ -10,6 +10,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -77,4 +78,24 @@ public class S3Service {
         }
         return convertedFile;
     }
+
+    public void deleteFile(String fileUrl) {
+        // Extract the key from the URL
+        String fileKey = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+
+        try {
+            // Build a delete object request
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileKey)
+                    .build();
+
+            // Perform the delete operation
+            s3Client.deleteObject(deleteObjectRequest);
+
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while deleting the file: " + e.getMessage());
+        }
+    }
+
 }
