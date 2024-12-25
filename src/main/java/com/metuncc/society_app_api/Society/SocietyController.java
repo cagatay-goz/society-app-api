@@ -26,6 +26,9 @@
             return societyService.getOneSociety(societyId);
         }
 
-
+        @GetMapping("/user/{email}")
+        public List<Society> getSocietiesByUserId(@PathVariable String email) {
+            return societyService.getSocietiesByUserId(email);
+        }
 
     }

@@ -1,32 +1,26 @@
 package com.metuncc.society_app_api.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.metuncc.society_app_api.Society.Society;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Setter
 @Getter
-public class User implements UserDetails {
+public class User implements org.springframework.security.core.userdetails.UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String name;
 
-    @Column
     private String surname;
 
     @Column(nullable = false, unique = true)
@@ -35,7 +29,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column
     private boolean enabled = true;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -43,11 +36,15 @@ public class User implements UserDetails {
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
+    @ManyToMany(mappedBy = "users") // Inverse side of the relationship
+    @JsonBackReference // Prevents cyclic reference in JSON serialization
+    private Set<Society> societies = new HashSet<>();
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
+                .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
+                .toList();
     }
 
     @Override
@@ -66,7 +63,9 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
     @Override
     public boolean isCredentialsNonExpired() {

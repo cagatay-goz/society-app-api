@@ -61,4 +61,64 @@ public class AnnouncementService {
 
         return announcementRepository.save(newAnnouncement);
     }
+
+    public void deleteAnnouncement(long announcementId) {
+        // Fetch the announcement by ID
+        Announcement announcement = announcementRepository.findById(announcementId).orElse(null);
+        if (announcement == null) {
+            throw new IllegalArgumentException("Announcement not found with ID: " + announcementId);
+        }
+
+        // Check if the announcement has a poster URL
+        String posterUrl = announcement.getPosterUrl();
+        if (posterUrl != null && !posterUrl.isEmpty()) {
+            // Delete the file from S3
+            s3Service.deleteFile(posterUrl);
+        }
+
+        // Delete the announcement from the database
+        announcementRepository.deleteById(announcementId);
+    }
+
+    public Announcement editAnnouncement(long announcementId, UpdateAnnouncementRequest updateRequest) {
+        // Find the existing announcement by ID
+        Announcement existingAnnouncement = announcementRepository.findById(announcementId).orElse(null);
+        if (existingAnnouncement == null) {
+            throw new IllegalArgumentException("Announcement not found with ID: " + announcementId);
+        }
+
+        // Update the fields of the announcement
+        if (updateRequest.getTitle() != null) {
+            existingAnnouncement.setTitle(updateRequest.getTitle());
+        }
+        if (updateRequest.getContent() != null) {
+            existingAnnouncement.setContent(updateRequest.getContent());
+        }
+        if (updateRequest.getLocation() != null) {
+            existingAnnouncement.setLocation(updateRequest.getLocation());
+        }
+        if (updateRequest.getDate() != null) {
+            existingAnnouncement.setDate(updateRequest.getDate());
+        }
+
+        // Handle file update
+        MultipartFile newFile = updateRequest.getFile();
+        if (newFile != null && !newFile.isEmpty()) {
+            // Delete the old file from S3
+            String oldPosterUrl = existingAnnouncement.getPosterUrl();
+            if (oldPosterUrl != null && !oldPosterUrl.isEmpty()) {
+                s3Service.deleteFile(oldPosterUrl);
+            }
+
+            // Upload the new file to S3
+            String newFileUrl = s3Service.uploadFile(newFile);
+            existingAnnouncement.setPosterUrl(newFileUrl);
+        }
+
+        // Save the updated announcement to the database
+        return announcementRepository.save(existingAnnouncement);
+    }
+
+
+
 }
