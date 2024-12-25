@@ -1,5 +1,6 @@
 package com.metuncc.society_app_api.JoinRequest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metuncc.society_app_api.Society.Society;
 import com.metuncc.society_app_api.user.User;
 import jakarta.persistence.*;
@@ -18,10 +19,12 @@ public class JoinRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "society_id", nullable = false)
     private Society society;
