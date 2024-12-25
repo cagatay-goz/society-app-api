@@ -1,5 +1,6 @@
 package com.metuncc.society_app_api.user;
 
+import com.metuncc.society_app_api.Society.Society;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,5 +75,15 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username);
+    }
+
+    public Long getPresiedSociety(String email) {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            return null;
+        }
+
+        return user.getPresidedSociety().getId();
     }
 }
