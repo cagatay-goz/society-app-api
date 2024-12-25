@@ -24,6 +24,10 @@ public class Society {
 
     private String description;
 
+    @OneToOne
+    @JoinColumn(name = "president_id", unique = true) // Ensures unique association
+    private User president;
+
     @ManyToMany
     @JoinTable(
             name = "society_user", // Join table name

@@ -29,6 +29,10 @@ public class User implements org.springframework.security.core.userdetails.UserD
     @Column(nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "president") // Bidirectional mapping
+    @JsonBackReference
+    private Society presidedSociety;
+
     private boolean enabled = true;
 
     @ElementCollection(fetch = FetchType.EAGER)
