@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllPendingRequestsDTO {
+    private Long id;
     private String userName;
     private String userSurname;
     private String userEmail;

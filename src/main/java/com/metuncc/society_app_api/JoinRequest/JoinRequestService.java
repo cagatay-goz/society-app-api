@@ -98,6 +98,7 @@ public class JoinRequestService {
         return joinRequestRepository.findBySocietyIdAndStatus(society.getId(), "pending")
                 .stream()
                 .map(request -> new GetAllPendingRequestsDTO(
+                        request.getId(),
                         request.getUser().getName(),
                         request.getUser().getSurname(),
                         request.getUser().getEmail(),
